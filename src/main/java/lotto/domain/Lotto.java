@@ -1,5 +1,6 @@
-package lotto;
+package lotto.domain;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class Lotto {
@@ -7,15 +8,13 @@ public class Lotto {
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
+        sortNumbers(numbers);
         this.numbers = numbers;
     }
 
     private void validate(List<Integer> numbers) {
         validateNumberCount(numbers);
-        // TODO: 중복 검사 기능 구현
         validateDuplicatedNumber(numbers);
-
-        // TODO: 각 숫자가 범위에서 벗어난 경우 예외 처리
         validateNumbersOutOfRange(numbers);
     }
 
@@ -41,5 +40,11 @@ public class Lotto {
         );
     }
 
-    // TODO: 추가 기능 구현
+    private void sortNumbers(List<Integer> numbers) {
+        numbers.sort(Comparator.naturalOrder());
+    }
+
+    public List<Integer> getNumbers() {
+        return numbers;
+    }
 }

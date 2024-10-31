@@ -1,11 +1,12 @@
-package lotto;
+package lotto.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LottoTest {
     @Test
@@ -21,11 +22,22 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
-
     @Test
     void 로또_번호가_범위에서_벗어난_숫자이면_예외가_발생한다() {
         assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 5, 46)))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 로또_번호를_오름차순으로_정렬한다() {
+        //given
+        List<Integer> numbers = new ArrayList<>(List.of(3, 1, 4, 2, 6, 5));
+        Lotto lotto = new Lotto(numbers);
+
+        //when
+        List<Integer> sortedNumbers = lotto.getNumbers();
+
+        //then
+        assertThat(List.of(1, 2, 3, 4, 5, 6)).isEqualTo(sortedNumbers);
     }
 }
