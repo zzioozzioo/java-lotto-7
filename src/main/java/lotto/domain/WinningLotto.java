@@ -3,16 +3,14 @@ package lotto.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WinningNumbers {
+public class WinningLotto {
 
-    // TODO: 클래스명 WinningLotto 고민해보기
+    // TODO: 일단 보너스 번호 일치 여부 확인은 findRank()에서 담당
 
     private final Lotto winningLottoNumbers;
-    private final int winningBonusNumber;
 
-    public WinningNumbers(Lotto winningLottoNumbers, int winningBonusNumber) {
+    public WinningLotto(Lotto winningLottoNumbers) {
         this.winningLottoNumbers = winningLottoNumbers;
-        this.winningBonusNumber = winningBonusNumber;
     }
 
     public int countMatchingNumbers(Lotto userLotto) {
@@ -23,10 +21,5 @@ public class WinningNumbers {
         matchNumbersList.retainAll(winningLottoNumbersList);
 
         return matchNumbersList.size();
-    }
-
-
-    public boolean isBonusNumberEqual(int bonusNumber) {
-        return bonusNumber == winningBonusNumber;
     }
 }
