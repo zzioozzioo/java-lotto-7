@@ -22,6 +22,11 @@ public class OutputView {
         }
     }
 
+    public void printWinningStatistics() {
+        System.out.println("당첨 통계");
+        System.out.println("---");
+    }
+
     public void printWinningResult(Map<Rank, Integer> winningResult) {
         System.out.println(
                 FIFTH.getScore() + "개 일치 (" + FIFTH.getStringPrize() + "원) - " + winningResult.get(FIFTH) + "개\n"
