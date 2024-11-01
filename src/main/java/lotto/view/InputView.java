@@ -4,28 +4,27 @@ import camp.nextstep.edu.missionutils.Console;
 import java.util.NoSuchElementException;
 
 public class InputView {
-    public long readBuyAmount() {
+
+    // TODO: trim()과 strip()의 차이 알아보기
+    public String readBuyAmount() {
         System.out.println("구입금액을 입력해 주세요.");
 
         String inputBuyAmount;
-        long buyAmount;
 
         try {
             inputBuyAmount = Console.readLine().trim();
-            if (inputBuyAmount.isEmpty()) {
-                throw new IllegalArgumentException("[ERROR] 값을 입력해야 합니다.");
-            }
-            buyAmount = Long.parseLong(inputBuyAmount);
-
-        } catch (NumberFormatException | NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             throw new IllegalArgumentException("[ERROR] 숫자를 입력해야 합니다.");
         }
 
-        return buyAmount;
+        if (inputBuyAmount.isEmpty()) {
+            throw new IllegalArgumentException("[ERROR] 값을 입력해야 합니다.");
+        }
+
+        return inputBuyAmount;
     }
 
     public String readWinningNumbers() {
-        // TODO: 여기서 숫자로 변환하는 건 좀 그렇지 않아?? view 레이어인데...
         System.out.println("당첨 번호를 입력해 주세요.");
 
         String inputWinningNumbers;
@@ -42,7 +41,7 @@ public class InputView {
         return inputWinningNumbers;
     }
 
-    public void readBonusNumber() {
+    public String readBonusNumber() {
         System.out.println("보너스 번호를 입력해 주세요.");
 
         String inputBonusNumber;
@@ -55,5 +54,7 @@ public class InputView {
         } catch (NumberFormatException | NoSuchElementException e) {
             throw new IllegalArgumentException("[ERROR] 숫자를 입력해야 합니다.");
         }
+
+        return inputBonusNumber;
     }
 }
