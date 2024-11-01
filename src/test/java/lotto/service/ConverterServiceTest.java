@@ -6,6 +6,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import java.util.List;
 import lotto.domain.Lotto;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ConverterServiceTest {
 
@@ -30,6 +32,28 @@ class ConverterServiceTest {
 
         //when & then
         assertThatThrownBy(() -> converterService.convertBonusNumber(inputBuyAmount))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = "0, 101000")
+    void 구입_금액_로또_개수_예외_테스트(String inputBuyAmount) {
+        //given
+        ConverterService converterService = new ConverterService();
+
+        //when & then
+        assertThatThrownBy(() -> converterService.convertBuyAmount(inputBuyAmount))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = "1900, 20500")
+    void 구입_금액_나머지_예외_테스트(String inputBuyAmount) {
+        //given
+        ConverterService converterService = new ConverterService();
+
+        //when & then
+        assertThatThrownBy(() -> converterService.convertBuyAmount(inputBuyAmount))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -76,6 +100,17 @@ class ConverterServiceTest {
         //given
         ConverterService converterService = new ConverterService();
         String inputBonusNumber = "^^";
+
+        //when & then
+        assertThatThrownBy(() -> converterService.convertBonusNumber(inputBonusNumber))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = "0, -1, 46")
+    void 보너스_번호_범위_예외_테스트(String inputBonusNumber) {
+        //given
+        ConverterService converterService = new ConverterService();
 
         //when & then
         assertThatThrownBy(() -> converterService.convertBonusNumber(inputBonusNumber))
