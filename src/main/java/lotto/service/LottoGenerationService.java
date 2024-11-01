@@ -4,26 +4,29 @@ import static camp.nextstep.edu.missionutils.Randoms.pickUniqueNumbersInRange;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 
 public class LottoGenerationService {
 
     private static final long LOTTO_PRICE = 1000;
-    private final long buyAmount;
 
-    public LottoGenerationService(long buyAmount) {
-        this.buyAmount = buyAmount;
-    }
 
-    public List<Lotto> generateLotto() {
+    public List<Lotto> generateLotto(int lottoCount) {
         List<Lotto> lottos = new ArrayList<>();
-        for (int count = 0; count < getLottoCount(); count++) {
-            lottos.add(new Lotto(pickUniqueNumbersInRange(1, 45, 6)));
+        for (int count = 0; count < lottoCount; count++) {
+            List<Integer> numbers = pickUniqueNumbersInRange(1, 45, 6);
+            numbers = sortNumbers(numbers);
+            lottos.add(new Lotto(numbers));
         }
         return lottos;
     }
 
-    private long getLottoCount() {
-        return buyAmount / LOTTO_PRICE;
+    public int getLottoCount(long buyAmount) {
+        return (int) (buyAmount / LOTTO_PRICE);
+    }
+
+    public List<Integer> sortNumbers(List<Integer> numbers) {
+        return numbers.stream().sorted().collect(Collectors.toList());
     }
 }
