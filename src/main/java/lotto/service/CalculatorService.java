@@ -1,12 +1,18 @@
 package lotto.service;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import lotto.domain.Rank;
 
 public class CalculatorService {
 
 
-    public long calculateWinnings(Rank rank) {
-        return rank.getPrize();
+    public long calculateWinnings(Map<Rank, Integer> winningResult) {
+        long sum = 0;
+        for (Entry<Rank, Integer> entry : winningResult.entrySet()) {
+            sum += entry.getKey().getPrize() * entry.getValue();
+        }
+        return sum;
     }
 
 

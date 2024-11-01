@@ -1,9 +1,14 @@
 package lotto.service;
 
 import static lotto.domain.Rank.FIFTH;
+import static lotto.domain.Rank.FIRST;
+import static lotto.domain.Rank.FOURTH;
+import static lotto.domain.Rank.NONE;
 import static lotto.domain.Rank.SECOND;
+import static lotto.domain.Rank.THIRD;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import java.util.Map;
 import lotto.domain.Rank;
 import org.junit.jupiter.api.Test;
 
@@ -13,10 +18,17 @@ class CalculatorServiceTest {
     void 당첨금_계산_테스트() {
         //given
         CalculatorService calculatorService = new CalculatorService();
-        Rank rank = SECOND;
+        Map<Rank, Integer> winningResult = Map.of(
+                FIRST, 0,
+                SECOND, 1,
+                THIRD, 0,
+                FOURTH, 0,
+                FIFTH, 0,
+                NONE, 2
+        );
 
         //when
-        long winnings = calculatorService.calculateWinnings(rank);
+        long winnings = calculatorService.calculateWinnings(winningResult);
 
         //then
         assertThat(winnings).isEqualTo(30_000_000L);
