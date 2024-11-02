@@ -6,8 +6,6 @@ import lotto.io.writer.Writer;
 
 public class OutputHandler {
 
-    // TODO: printLottoCount, printLottoNumbers 역할 담당하는 메서드도 만들기
-
     private final Writer writer;
 
     private final UserLotto userLotto;
@@ -29,7 +27,7 @@ public class OutputHandler {
         this.winningResultParser = winningResultParser;
     }
 
-    public void UserLottoHandle() {
+    public void userLottoHandle() {
         String resultString = userLottoParser.parseUserLotto(userLotto);
         writer.write(resultString);
     }

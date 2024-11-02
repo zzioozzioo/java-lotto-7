@@ -1,5 +1,13 @@
 package lotto.controller;
 
+import static lotto.constants.ExceptionMessages.BONUS_NUMBER_OUT_OF_RANGE;
+import static lotto.constants.ExceptionMessages.BUY_AMOUNT_HAS_CHANGE;
+import static lotto.constants.ExceptionMessages.LOTTO_COUNT_OUT_OF_RANGE;
+import static lotto.constants.NumberConstants.LOTTO_END_NUM;
+import static lotto.constants.NumberConstants.LOTTO_START_NUM;
+import static lotto.constants.NumberConstants.MAX_TICKET_BUY_AMOUNT;
+import static lotto.constants.NumberConstants.TICKET_PRICE;
+import static lotto.constants.NumberConstants.ZERO;
 import static lotto.domain.Rank.findRank;
 
 import java.util.EnumMap;
@@ -8,28 +16,30 @@ import java.util.Map;
 import lotto.domain.Lotto;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
+import lotto.dto.LottoRequest;
+import lotto.io.InputHandler;
+import lotto.io.OutputHandler;
 import lotto.service.CalculatorService;
 import lotto.service.ConverterService;
 import lotto.service.LottoGenerationService;
-import lotto.view.InputView;
-import lotto.view.OutputView;
 
 public class LottoController {
 
-    private final InputView inputView;
-    private final OutputView outputView;
+    private final InputHandler inputHandler;
+    private final OutputHandler outputHandler;
 
     private final LottoGenerationService lottoGenerationService;
     private final CalculatorService calculatorService;
     private final ConverterService converterService;
 
-    public LottoController(InputView inputView, OutputView outputView,
+    public LottoController(InputHandler inputHandler,
+                           OutputHandler outputHandler,
                            LottoGenerationService lottoGenerationService,
                            CalculatorService calculatorService,
                            ConverterService converterService) {
 
-        this.inputView = inputView;
-        this.outputView = outputView;
+        this.inputHandler = inputHandler;
+        this.outputHandler = outputHandler;
 
         this.lottoGenerationService = lottoGenerationService;
         this.calculatorService = calculatorService;
@@ -38,38 +48,62 @@ public class LottoController {
 
 
     public void run() {
-        String inputBuyAmount = inputView.readBuyAmount();
-        long buyAmount = converterService.convertBuyAmount(inputBuyAmount);
+        LottoRequest lottoRequest = inputHandler.handle();
+        long buyAmount = lottoRequest.getBuyAmount();
+
+        // TODO: validation은 다른 클래스에 책임 할당하기
+        validateLottoCount(buyAmount);
+        validateBuyAmountHasChange(buyAmount);
 
         int lottoCount = lottoGenerationService.getLottoCount(buyAmount);
-        outputView.printLottoCount(lottoCount);
-
         List<Lotto> lottos = lottoGenerationService.generateLotto(lottoCount);
-        outputView.printLottoNumbers(lottos);
+        outputHandler.userLottoHandle();
 
-        String inputWinningNumbers = inputView.readWinningNumbers();
-        Lotto winningLottoNumbers = converterService.convertWinningNumbers(inputWinningNumbers);
+        Lotto winningLottoNumbers = converterService.convertWinningNumbers(lottoRequest.getWinningNumbers());
         WinningLotto winningLotto = new WinningLotto(winningLottoNumbers);
 
-        String inputBonusNumber = inputView.readBonusNumber();
-        int bonusNumber = converterService.convertBonusNumber(inputBonusNumber);
+        int bonusNumber = lottoRequest.getBonusNumber();
+
+        // TODO: validation은 다른 클래스에 책임 할당하기
+        validateBonusNumberRange(bonusNumber);
         winningLotto.checkDuplicateBonusNumber(bonusNumber);
 
+        // TODO: winningResult -> dto로 변경
         Map<Rank, Integer> winningResult = initialMap();
-        for (Lotto userLotto : lottos) {
-            int score = winningLotto.countMatchingNumbers(userLotto);
+        for (Lotto lotto : lottos) {
+            int score = winningLotto.countMatchingNumbers(lotto);
             boolean isBonusMatches = false;
-            if (userLotto.getNumbers().contains(bonusNumber)) {
+            if (lotto.getNumbers().contains(bonusNumber)) {
                 isBonusMatches = true;
             }
             Rank rank = findRank(score, isBonusMatches);
             winningResult.put(rank, winningResult.getOrDefault(rank, 0) + 1);
         }
-        outputView.printWinningStatistics();
-        outputView.printWinningResult(winningResult);
+//        outputView.printWinningResult(winningResult);
 
-        long prize = calculatorService.calculateWinnings(winningResult);
-        outputView.printRateOfReturn(calculatorService.calculateRateOfReturn(buyAmount, prize));
+//        long prize = calculatorService.calculateWinnings(winningResult);
+//        outputView.printRateOfReturn(calculatorService.calculateRateOfReturn(buyAmount, prize));
+
+        outputHandler.winningResultHandle();
+    }
+
+
+    private static void validateLottoCount(long buyAmount) {
+        if (buyAmount < TICKET_PRICE || buyAmount > MAX_TICKET_BUY_AMOUNT) {
+            throw new IllegalArgumentException(LOTTO_COUNT_OUT_OF_RANGE);
+        }
+    }
+
+    private static void validateBuyAmountHasChange(long buyAmount) {
+        if (buyAmount % TICKET_PRICE != ZERO) {
+            throw new IllegalArgumentException(BUY_AMOUNT_HAS_CHANGE);
+        }
+    }
+
+    private static void validateBonusNumberRange(int bonusNumber) {
+        if (bonusNumber < LOTTO_START_NUM || bonusNumber > LOTTO_END_NUM) {
+            throw new IllegalArgumentException(BONUS_NUMBER_OUT_OF_RANGE);
+        }
     }
 
     private Map<Rank, Integer> initialMap() {
