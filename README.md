@@ -83,6 +83,10 @@
 
 #### - WinningLotto
 
+### 📁 [dto]
+
+#### - LottoRequest
+
 ### 📁 [service]
 
 #### - LottoGenerationService
