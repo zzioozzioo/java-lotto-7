@@ -93,11 +93,9 @@
 
 ### 📁 [service]
 
-#### - LottoGenerationService
+#### - LottoService
 
 #### - CalculatorService
-
-#### - ConverterService
 
 ### 📁 [io]
 

@@ -1,0 +1,62 @@
+package lotto.service;
+
+import static camp.nextstep.edu.missionutils.Randoms.pickUniqueNumbersInRange;
+import static lotto.constants.ExceptionMessages.ILLEGAL_NUMBER_FORMAT;
+import static lotto.constants.NumberConstants.LOTTO_END_NUM;
+import static lotto.constants.NumberConstants.LOTTO_NUMBER_COUNT;
+import static lotto.constants.NumberConstants.LOTTO_PRICE;
+import static lotto.constants.NumberConstants.LOTTO_START_NUM;
+import static lotto.constants.NumberConstants.ZERO;
+import static lotto.constants.StringConstants.COMMA;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import lotto.domain.Lotto;
+import lotto.domain.WinningLotto;
+import lotto.dto.UserLotto;
+
+public class LottoService {
+
+    public UserLotto getUserLotto(long buyAmount) {
+        int lottoCount = getLottoCount(buyAmount);
+        List<Lotto> lottos = generateLotto(lottoCount);
+
+        return new UserLotto(lottoCount, lottos);
+    }
+
+    private int getLottoCount(long buyAmount) {
+        return (int) (buyAmount / LOTTO_PRICE);
+    }
+
+    private List<Lotto> generateLotto(int lottoCount) {
+        List<Lotto> lottos = new ArrayList<>();
+        for (int count = ZERO; count < lottoCount; count++) {
+            List<Integer> numbers = pickUniqueNumbersInRange(LOTTO_START_NUM, LOTTO_END_NUM, LOTTO_NUMBER_COUNT);
+            numbers = sortNumbers(numbers);
+            lottos.add(new Lotto(numbers));
+        }
+        return lottos;
+    }
+
+    private List<Integer> sortNumbers(List<Integer> numbers) {
+        return numbers.stream().sorted().collect(Collectors.toList());
+    }
+
+    public WinningLotto convertWinningNumbers(String inputWinningNumbers) {
+        List<Integer> winningNumbers;
+
+        try {
+            winningNumbers = Arrays.stream(inputWinningNumbers.split(COMMA))
+                    .map(number -> Integer.parseInt(number.trim()))
+                    .toList();
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ILLEGAL_NUMBER_FORMAT);
+        }
+
+        return new WinningLotto(new Lotto(winningNumbers));
+    }
+
+
+}
