@@ -81,6 +81,8 @@
 
 #### - Rank
 
+#### - Winning
+
 #### - WinningLotto
 
 ### 📁 [dto]
@@ -94,8 +96,6 @@
 ### 📁 [service]
 
 #### - LottoService
-
-#### - CalculatorService
 
 ### 📁 [io]
 

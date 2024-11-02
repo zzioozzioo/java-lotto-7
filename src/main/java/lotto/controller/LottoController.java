@@ -8,87 +8,65 @@ import static lotto.constants.NumberConstants.LOTTO_START_NUM;
 import static lotto.constants.NumberConstants.MAX_TICKET_BUY_AMOUNT;
 import static lotto.constants.NumberConstants.TICKET_PRICE;
 import static lotto.constants.NumberConstants.ZERO;
-import static lotto.domain.Rank.findRank;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import lotto.config.LottoConfig;
-import lotto.domain.Lotto;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
+import lotto.domain.winning.Winning;
 import lotto.dto.LottoRequest;
 import lotto.dto.UserLotto;
 import lotto.dto.WinningResult;
 import lotto.io.InputHandler;
 import lotto.io.OutputHandler;
-import lotto.service.CalculatorService;
-import lotto.service.ConverterService;
-import lotto.service.LottoGenerationService;
+import lotto.service.LottoService;
 
 public class LottoController {
 
     private final InputHandler inputHandler;
     private final OutputHandler outputHandler;
 
-    private final LottoGenerationService lottoGenerationService;
-    private final CalculatorService calculatorService;
-    private final ConverterService converterService;
+    private final LottoService lottoService;
+
 
     public LottoController(LottoConfig lottoConfig,
-                           LottoGenerationService lottoGenerationService,
-                           CalculatorService calculatorService,
-                           ConverterService converterService) {
+                           LottoService lottoService) {
 
         this.inputHandler = lottoConfig.getInputHandler();
         this.outputHandler = lottoConfig.getOutputHandler();
 
-        this.lottoGenerationService = lottoGenerationService;
-        this.calculatorService = calculatorService;
-        this.converterService = converterService;
+        this.lottoService = lottoService;
     }
 
     public void run() {
-        long buyAmount = inputHandler.readBuyAmount();
 
+        // 구입 금액 입력받기
+        long buyAmount = inputHandler.readBuyAmount();
         // TODO: validation은 다른 클래스에 책임 할당하기
         validateLottoCount(buyAmount);
         validateBuyAmountHasChange(buyAmount);
 
-        // TODO: dto랑 연결해서 사용자가 구매한 로또 출력되게 하기..
-        int lottoCount = lottoGenerationService.getLottoCount(buyAmount);
-        List<Lotto> lottos = lottoGenerationService.generateLotto(lottoCount);
-        outputHandler.userLottoHandle(new UserLotto(lottoCount, lottos));
+        // 구매한 로또 번호 출력하기
+        UserLotto userLotto = lottoService.getUserLotto(buyAmount);
+        outputHandler.userLottoHandle(userLotto);
 
-        LottoRequest lottoRequest = inputHandler.LottoNumberHandle();
+        // 당첨 번호, 보너스 번호 입력받기
+        LottoRequest lottoRequest = inputHandler.handleWinningNumber();
+        // 당첨 번호 로또 객체로 변환
+        WinningLotto winningLotto = lottoService.convertWinningNumbers(lottoRequest.getWinningNumbers());
 
-        Lotto winningLottoNumbers = converterService.convertWinningNumbers(lottoRequest.getWinningNumbers());
-        WinningLotto winningLotto = new WinningLotto(winningLottoNumbers);
-
-        int bonusNumber = lottoRequest.getBonusNumber();
-
+        // 보너스 번호 검증
         // TODO: validation은 다른 클래스에 책임 할당하기
+        int bonusNumber = lottoRequest.getBonusNumber();
         validateBonusNumberRange(bonusNumber);
         winningLotto.checkDuplicateBonusNumber(bonusNumber);
 
-        // TODO: winningResult -> dto로 변경
-        Map<Rank, Integer> winningResult = initialMap();
-        for (Lotto lotto : lottos) {
-            int score = winningLotto.countMatchingNumbers(lotto);
-            boolean isBonusMatches = false;
-            if (lotto.getNumbers().contains(bonusNumber)) {
-                isBonusMatches = true;
-            }
-            Rank rank = findRank(score, isBonusMatches);
-            winningResult.put(rank, winningResult.getOrDefault(rank, 0) + 1);
-        }
-//        outputView.printWinningResult(winningResult);
+        // 당첨 결과 계산 로직...
+        WinningResult result = new Winning().calculate(userLotto, buyAmount, winningLotto, bonusNumber);
 
-        long prize = calculatorService.calculateWinnings(winningResult);
-        double rateOfReturn = calculatorService.calculateRateOfReturn(buyAmount, prize);
-//        outputView.printRateOfReturn(rateOfReturn);
-
-        outputHandler.winningResultHandle(new WinningResult(winningResult, prize, rateOfReturn));
+        // 당첨 결과 출력
+        outputHandler.winningResultHandle(result);
     }
 
 
@@ -110,11 +88,11 @@ public class LottoController {
         }
     }
 
-    private Map<Rank, Integer> initialMap() {
-        Map<Rank, Integer> winningResult = new EnumMap<>(Rank.class);
+    public static Map<Rank, Integer> initializeResultMap() {
+        Map<Rank, Integer> initialMap = new EnumMap<>(Rank.class);
         for (Rank rank : Rank.values()) {
-            winningResult.put(rank, 0);
+            initialMap.put(rank, 0);
         }
-        return winningResult;
+        return initialMap;
     }
 }
