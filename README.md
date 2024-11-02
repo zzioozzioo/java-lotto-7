@@ -93,8 +93,6 @@
 
 ### 📁 [view]
 
-#### - InputView
-
 #### - OutputView
 
 ### 📁 [io]
@@ -102,6 +100,8 @@
 #### - reader
 
 #### - writer
+
+#### - InputHandler
 
 ### 📁 [constants]
 
