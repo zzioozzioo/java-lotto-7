@@ -20,15 +20,14 @@ public class InputHandler {
         this.validator = validator;
     }
 
-    public LottoRequest handle() {
-        long buyAmount = readBuyAmount();
+    public LottoRequest LottoNumberHandle() {
         String winningNumbers = readWinningNumbers();
         int bonusNumber = readBonusNumber();
 
-        return LottoRequest.of(buyAmount, winningNumbers, bonusNumber);
+        return LottoRequest.of(winningNumbers, bonusNumber);
     }
 
-    private long readBuyAmount() {
+    public long readBuyAmount() {
         writer.write(READ_BUY_AMOUNT);
         String buyAmount = reader.readLine();
         return validator.validateBuyAmount(buyAmount);
