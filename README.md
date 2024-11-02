@@ -87,6 +87,8 @@
 
 #### - LottoRequest
 
+#### - UserLotto
+
 #### - WinningResult
 
 ### 📁 [service]
@@ -96,10 +98,6 @@
 #### - CalculatorService
 
 #### - ConverterService
-
-### 📁 [view]
-
-#### - OutputView
 
 ### 📁 [io]
 
@@ -112,6 +110,8 @@
 #### - InputValidator
 
 #### - OutputHandler
+
+#### - UserLottoParser
 
 #### - WinningResultParser
 

@@ -11,7 +11,7 @@ import lotto.dto.WinningResult;
 
 public class WinningResultParser {
 
-    public String parse(WinningResult winningResult) {
+    public String parseWinningResult(WinningResult winningResult) {
         StringBuilder sb = new StringBuilder();
 
         appendWinningStatistics(sb);
