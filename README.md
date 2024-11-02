@@ -87,6 +87,8 @@
 
 #### - LottoRequest
 
+#### - WinningResult
+
 ### 📁 [service]
 
 #### - LottoGenerationService
@@ -109,6 +111,10 @@
 
 #### - InputValidator
 
+#### - OutputHandler
+
+#### - WinningResultParser
+
 ### 📁 [constants]
 
 #### - ExceptionMessages
@@ -116,6 +122,8 @@
 #### - InputMessages
 
 #### - NumberConstants
+
+#### - OutputMessages
 
 #### - StringConstants
 
