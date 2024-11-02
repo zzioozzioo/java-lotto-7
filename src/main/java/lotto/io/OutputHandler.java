@@ -7,32 +7,23 @@ import lotto.io.writer.Writer;
 public class OutputHandler {
 
     private final Writer writer;
-
-    private final UserLotto userLotto;
-    private final WinningResult winningResult;
-
     private final UserLottoParser userLottoParser;
     private final WinningResultParser winningResultParser;
 
     public OutputHandler(Writer writer,
-                         UserLotto userLotto, WinningResult winningResult,
                          UserLottoParser userLottoParser,
                          WinningResultParser winningResultParser) {
         this.writer = writer;
-
-        this.userLotto = userLotto;
-        this.winningResult = winningResult;
-
         this.userLottoParser = userLottoParser;
         this.winningResultParser = winningResultParser;
     }
 
-    public void userLottoHandle() {
+    public void userLottoHandle(UserLotto userLotto) {
         String resultString = userLottoParser.parseUserLotto(userLotto);
         writer.write(resultString);
     }
 
-    public void winningResultHandle() {
+    public void winningResultHandle(WinningResult winningResult) {
         String resultString = winningResultParser.parseWinningResult(winningResult);
         writer.write(resultString);
     }

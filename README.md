@@ -115,6 +115,12 @@
 
 #### - WinningResultParser
 
+### 📁 [config]
+
+#### - Config
+
+#### - LottoConfig
+
 ### 📁 [constants]
 
 #### - ExceptionMessages

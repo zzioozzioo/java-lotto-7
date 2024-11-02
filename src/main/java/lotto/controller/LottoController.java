@@ -13,10 +13,13 @@ import static lotto.domain.Rank.findRank;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import lotto.config.LottoConfig;
 import lotto.domain.Lotto;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
 import lotto.dto.LottoRequest;
+import lotto.dto.UserLotto;
+import lotto.dto.WinningResult;
 import lotto.io.InputHandler;
 import lotto.io.OutputHandler;
 import lotto.service.CalculatorService;
@@ -32,32 +35,32 @@ public class LottoController {
     private final CalculatorService calculatorService;
     private final ConverterService converterService;
 
-    public LottoController(InputHandler inputHandler,
-                           OutputHandler outputHandler,
+    public LottoController(LottoConfig lottoConfig,
                            LottoGenerationService lottoGenerationService,
                            CalculatorService calculatorService,
                            ConverterService converterService) {
 
-        this.inputHandler = inputHandler;
-        this.outputHandler = outputHandler;
+        this.inputHandler = lottoConfig.getInputHandler();
+        this.outputHandler = lottoConfig.getOutputHandler();
 
         this.lottoGenerationService = lottoGenerationService;
         this.calculatorService = calculatorService;
         this.converterService = converterService;
     }
 
-
     public void run() {
-        LottoRequest lottoRequest = inputHandler.handle();
-        long buyAmount = lottoRequest.getBuyAmount();
+        long buyAmount = inputHandler.readBuyAmount();
 
         // TODO: validation은 다른 클래스에 책임 할당하기
         validateLottoCount(buyAmount);
         validateBuyAmountHasChange(buyAmount);
 
+        // TODO: dto랑 연결해서 사용자가 구매한 로또 출력되게 하기..
         int lottoCount = lottoGenerationService.getLottoCount(buyAmount);
         List<Lotto> lottos = lottoGenerationService.generateLotto(lottoCount);
-        outputHandler.userLottoHandle();
+        outputHandler.userLottoHandle(new UserLotto(lottoCount, lottos));
+
+        LottoRequest lottoRequest = inputHandler.LottoNumberHandle();
 
         Lotto winningLottoNumbers = converterService.convertWinningNumbers(lottoRequest.getWinningNumbers());
         WinningLotto winningLotto = new WinningLotto(winningLottoNumbers);
@@ -81,10 +84,11 @@ public class LottoController {
         }
 //        outputView.printWinningResult(winningResult);
 
-//        long prize = calculatorService.calculateWinnings(winningResult);
-//        outputView.printRateOfReturn(calculatorService.calculateRateOfReturn(buyAmount, prize));
+        long prize = calculatorService.calculateWinnings(winningResult);
+        double rateOfReturn = calculatorService.calculateRateOfReturn(buyAmount, prize);
+//        outputView.printRateOfReturn(rateOfReturn);
 
-        outputHandler.winningResultHandle();
+        outputHandler.winningResultHandle(new WinningResult(winningResult, prize, rateOfReturn));
     }
 
 
