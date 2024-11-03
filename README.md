@@ -81,9 +81,9 @@
 
 #### - Rank
 
-#### - Winning
-
 #### - WinningLotto
+
+#### - WinningProcessor
 
 ### 📁 [dto]
 
