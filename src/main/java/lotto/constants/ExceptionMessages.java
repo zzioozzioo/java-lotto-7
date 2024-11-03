@@ -5,8 +5,7 @@ import static lotto.constants.NumberConstants.LOTTO_START_NUM;
 
 public class ExceptionMessages {
 
-    // TODO: 로또 번호, 보너스 번호 숫자 범위를 하나로 통일해야 하는지 고민해보기
-
+    public static final String ILLEGAL_INPUT_READ = "[ERROR] 잘못된 입력입니다.";
     public static final String ILLEGAL_NUMBER_FORMAT = "[ERROR] 잘못된 숫자 형식입니다.";
     public static final String EMPTY_WINNING_NUMBER_INPUT = "[ERROR] 당첨 번호를 입력해야 합니다.";
     public static final String LOTTO_COUNT_OUT_OF_RANGE = "[ERROR] 로또는 한 장 이상, 백 장 이하로 구매할 수 있습니다.";

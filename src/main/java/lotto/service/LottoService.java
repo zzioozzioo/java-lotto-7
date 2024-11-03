@@ -1,7 +1,6 @@
 package lotto.service;
 
 import static camp.nextstep.edu.missionutils.Randoms.pickUniqueNumbersInRange;
-import static lotto.constants.ExceptionMessages.ILLEGAL_NUMBER_FORMAT;
 import static lotto.constants.NumberConstants.LOTTO_END_NUM;
 import static lotto.constants.NumberConstants.LOTTO_NUMBER_COUNT;
 import static lotto.constants.NumberConstants.LOTTO_PRICE;
@@ -18,6 +17,7 @@ import lotto.domain.WinningLotto;
 import lotto.domain.WinningProcessor;
 import lotto.dto.UserLotto;
 import lotto.dto.WinningResult;
+import lotto.exception.IllegalNumberFormatException;
 
 public class LottoService {
 
@@ -54,7 +54,7 @@ public class LottoService {
                     .map(number -> Integer.parseInt(number.trim()))
                     .toList();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ILLEGAL_NUMBER_FORMAT);
+            throw new IllegalNumberFormatException();
         }
 
         return new WinningLotto(new Lotto(winningNumbers));

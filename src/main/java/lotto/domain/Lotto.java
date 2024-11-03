@@ -1,10 +1,9 @@
 package lotto.domain;
 
-import static lotto.constants.ExceptionMessages.DUPLICATED_LOTTO_NUMBER;
-import static lotto.constants.ExceptionMessages.LOTTO_NUMBER_COUNT_OUT_OF_RANGE;
-import static lotto.constants.ExceptionMessages.LOTTO_NUMBER_OUT_OF_RANGE;
-
 import java.util.List;
+import lotto.exception.DuplicatedLottoNumberException;
+import lotto.exception.LottoNumberCountOutOfRangeException;
+import lotto.exception.LottoNumberOutOfRangeException;
 
 public class Lotto {
     private final List<Integer> numbers;
@@ -22,14 +21,14 @@ public class Lotto {
 
     private static void validateNumberCount(List<Integer> numbers) {
         if (numbers.size() != 6) {
-            throw new IllegalArgumentException(LOTTO_NUMBER_COUNT_OUT_OF_RANGE);
+            throw new LottoNumberCountOutOfRangeException();
         }
     }
 
     private void validateNumbersOutOfRange(List<Integer> numbers) {
         numbers.stream().forEach(number -> {
                     if (number > 45 || number < 1) {
-                        throw new IllegalArgumentException(LOTTO_NUMBER_OUT_OF_RANGE);
+                        throw new LottoNumberOutOfRangeException();
                     }
                 }
         );
@@ -38,7 +37,7 @@ public class Lotto {
     private void validateDuplicatedNumber(List<Integer> numbers) {
         long count = numbers.stream().distinct().count();
         if (count != 6) {
-            throw new IllegalArgumentException(DUPLICATED_LOTTO_NUMBER);
+            throw new DuplicatedLottoNumberException();
         }
     }
 

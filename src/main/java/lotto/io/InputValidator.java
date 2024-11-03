@@ -1,7 +1,7 @@
 package lotto.io;
 
-import static lotto.constants.ExceptionMessages.EMPTY_WINNING_NUMBER_INPUT;
-import static lotto.constants.ExceptionMessages.ILLEGAL_NUMBER_FORMAT;
+import lotto.exception.EmptyWinningNumberInputException;
+import lotto.exception.IllegalNumberFormatException;
 
 public class InputValidator {
 
@@ -9,13 +9,13 @@ public class InputValidator {
         try {
             return Long.parseLong(buyAmount);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ILLEGAL_NUMBER_FORMAT);
+            throw new IllegalNumberFormatException();
         }
     }
 
     public void validateWinningNumbers(String winningNumbers) {
         if (winningNumbers.isEmpty()) {
-            throw new IllegalArgumentException(EMPTY_WINNING_NUMBER_INPUT);
+            throw new EmptyWinningNumberInputException();
         }
     }
 
@@ -23,7 +23,7 @@ public class InputValidator {
         try {
             return Integer.parseInt(bonusNumber);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ILLEGAL_NUMBER_FORMAT);
+            throw new IllegalNumberFormatException();
         }
     }
 }

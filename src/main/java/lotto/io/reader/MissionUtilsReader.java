@@ -1,6 +1,7 @@
 package lotto.io.reader;
 
 import camp.nextstep.edu.missionutils.Console;
+import lotto.exception.IllegalInputReadException;
 
 public class MissionUtilsReader implements Reader {
 
@@ -9,7 +10,7 @@ public class MissionUtilsReader implements Reader {
         try {
             return Console.readLine();
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            throw new IllegalInputReadException();
         }
     }
 }

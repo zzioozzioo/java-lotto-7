@@ -131,6 +131,28 @@
 
 #### - StringConstants
 
+### 📁 [exception]
+
+#### - BonusNumberDuplicatedLottoNumberException
+
+#### - BonusNumberOutOfRangeException
+
+#### - BuyAmountHasChangeException
+
+#### - DuplicatedLottoNumberException
+
+#### - EmptyWinningNumberInputException
+
+#### - IllegalInputReadException
+
+#### - IllegalNumberFormatException
+
+#### - LottoCountOutOfRangeException
+
+#### - LottoNumberCountOutOfRangeException
+
+#### - LottoNumberOutOfRangeException
+
 ***
 
 ## ✅ 프로그래밍 요구 사항
