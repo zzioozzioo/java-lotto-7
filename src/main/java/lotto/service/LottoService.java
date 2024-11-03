@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 import lotto.domain.WinningLotto;
+import lotto.domain.WinningProcessor;
 import lotto.dto.UserLotto;
+import lotto.dto.WinningResult;
 
 public class LottoService {
 
@@ -58,5 +60,11 @@ public class LottoService {
         return new WinningLotto(new Lotto(winningNumbers));
     }
 
+    public WinningResult calculateWinningResult(UserLotto userLotto,
+                                                long buyAmount,
+                                                WinningLotto winningLotto,
+                                                int bonusNumber) {
+        return new WinningProcessor(userLotto, winningLotto, bonusNumber).calculate(buyAmount);
+    }
 
 }

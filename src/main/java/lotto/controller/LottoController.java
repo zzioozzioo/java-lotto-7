@@ -8,7 +8,6 @@ import java.util.Map;
 import lotto.config.LottoConfig;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
-import lotto.domain.winning.Winning;
 import lotto.dto.LottoRequest;
 import lotto.dto.UserLotto;
 import lotto.dto.WinningResult;
@@ -45,18 +44,10 @@ public class LottoController {
 
         int bonusNumber = getValidBonusNumber(lottoRequest, winningLotto);
 
-        WinningResult result = calculateWinningResult(userLotto, buyAmount, winningLotto, bonusNumber);
+        WinningResult result = lottoService.calculateWinningResult(userLotto, buyAmount, winningLotto, bonusNumber);
         outputHandler.winningResultHandle(result);
     }
 
-
-    public static Map<Rank, Integer> initializeResultMap() {
-        Map<Rank, Integer> initialMap = new EnumMap<>(Rank.class);
-        for (Rank rank : Rank.values()) {
-            initialMap.put(rank, 0);
-        }
-        return initialMap;
-    }
 
     private long getValidBuyAmount() {
         long buyAmount = inputHandler.readBuyAmount();
@@ -71,10 +62,13 @@ public class LottoController {
         return bonusNumber;
     }
 
-    private WinningResult calculateWinningResult(UserLotto userLotto,
-                                                 long buyAmount,
-                                                 WinningLotto winningLotto,
-                                                 int bonusNumber) {
-        return new Winning().calculate(userLotto, buyAmount, winningLotto, bonusNumber);
+    public static Map<Rank, Integer> initializeResultMap() {
+        Map<Rank, Integer> initialMap = new EnumMap<>(Rank.class);
+        for (Rank rank : Rank.values()) {
+            initialMap.put(rank, 0);
+        }
+        return initialMap;
     }
+
+
 }
