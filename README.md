@@ -71,87 +71,71 @@
 
 ## 📦 역할별 패키지 분리
 
-### 📁 [controller]
-
-#### - LottoController
-
-### 📁 [domain]
-
-#### - Lotto
-
-#### - Rank
-
-#### - WinningLotto
-
-#### - WinningProcessor
-
-### 📁 [dto]
-
-#### - LottoRequest
-
-#### - UserLotto
-
-#### - WinningResult
-
-### 📁 [service]
-
-#### - LottoService
-
-### 📁 [io]
-
-#### - reader
-
-#### - writer
-
-#### - InputHandler
-
-#### - InputValidator
-
-#### - OutputHandler
-
-#### - UserLottoParser
-
-#### - WinningResultParser
-
-### 📁 [config]
-
-#### - Config
-
-#### - LottoConfig
-
-### 📁 [constants]
-
-#### - ExceptionMessages
-
-#### - InputMessages
-
-#### - NumberConstants
-
-#### - OutputMessages
-
-#### - StringConstants
-
-### 📁 [exception]
-
-#### - BonusNumberDuplicatedLottoNumberException
-
-#### - BonusNumberOutOfRangeException
-
-#### - BuyAmountHasChangeException
-
-#### - DuplicatedLottoNumberException
-
-#### - EmptyWinningNumberInputException
-
-#### - IllegalInputReadException
-
-#### - IllegalNumberFormatException
-
-#### - LottoCountOutOfRangeException
-
-#### - LottoNumberCountOutOfRangeException
-
-#### - LottoNumberOutOfRangeException
+```
+src/
+├── main
+│   └── java
+│       └── lotto
+│           ├── Application.java
+│           ├── config
+│           │   ├── Config.java                   // Reader와 Writer 구현체를 구성해 반환
+│           │   └── LottoConfig.java              // Config를 주입받아 입출력에 필요한 컴포넌트 반환
+│           ├── constants
+│           │   ├── ExceptionMessages.java 
+│           │   ├── InputMessages.java
+│           │   ├── NumberConstants.java
+│           │   ├── OutputMessages.java
+│           │   └── StringConstants.java
+│           ├── controller
+│           │   └── LottoController.java
+│           ├── domain
+│           │   ├── Lotto.java                    // 로또 객체
+│           │   ├── Rank.java                     // 일치 개수별 등수를 관리
+│           │   ├── WinningLotto.java             // 당첨 로또(당첨 번호와 보너스 번호)를 관리
+│           │   └── WinningProcessor.java         // 당첨 결과(통계, 당첨금, 수익률)를 관리
+│           ├── dto
+│           │   ├── LottoRequest.java             // 당첨 번호와 보너스 번호를 저장
+│           │   ├── UserLotto.java                // 사용자가 구매한 로또를 저장
+│           │   └── WinningResult.java            // 당첨 결과를 저장
+│           │
+│           ├── exception                          // 커스텀 예외 메서드
+│           ├── io
+│           │   ├── InputHandler.java              // 입력값을 받아 반환
+│           │   ├── InputValidator.java            // 입력값을 검증
+│           │   ├── OutputHandler.java             // 결과를 출력 
+│           │   ├── UserLottoParser.java           // 사용자가 구매한 로또를 파싱해 문자열 값으로 반환
+│           │   ├── WinningResultParser.java       // 당첨 결과를 파싱해 문자열 값으로 반환
+│           │   ├── reader
+│           │   │   ├── MissionUtilsReader.java    // Reader의 구현체로, 콘솔에서 값을 입력받음
+│           │   │   └── Reader.java                // 입력을 추상화
+│           │   └── writer
+│           │       ├── SystemWriter.java          // Writer의 구현체로, 콘솔에 값을 출력
+│           │       └── Writer.java                // 출력을 추상화
+│           ├── service
+│           │   └── LottoService.java             
+│           └── validator
+│               └── Validator.java                 
+└── test
+    └── java
+        └── lotto
+            ├── ApplicationTest.java
+            ├── domain
+            │   ├── LottoTest.java
+            │   ├── RankTest.java
+            │   ├── WinningLottoTest.java
+            │   └── WinningProcessorTest.java
+            ├── io
+            │   ├── InputHandlerTest.java
+            │   ├── InputValidatorTest.java
+            │   ├── OutputHandlerTest.java
+            │   ├── UserLottoParserTest.java
+            │   └── WinningResultParserTest.java
+            ├── service
+            │   └── LottoServiceTest.java
+            └── testutil
+                ├── ReaderFake.java                 // 테스트 입력값을 모킹
+                └── WriterFake.java                 // 테스트 출력값을 검증
+```
 
 ***
 
@@ -159,23 +143,23 @@
 
 ### 제출 전 확인 리스트
 
-- [ ] JDK-21 사용
-- [ ] 프로그램 실행의 시작점은 `Application`의 `main()`
-- [ ] `build.gradle` 변경 불가, 제공된 라이브러리만 사용
+- [x] JDK-21 사용
+- [x] 프로그램 실행의 시작점은 `Application`의 `main()`
+- [x] `build.gradle` 변경 불가, 제공된 라이브러리만 사용
 - [ ] [Java Style Guide](https://github.com/woowacourse/woowacourse-docs/tree/main/styleguide/java)를 준수하며 프로그래밍
-- [ ] 프로그램 종료 시`System.exit()`를 호출 X
+- [x] 프로그램 종료 시`System.exit()`를 호출 X
 - [ ] 프로그램 구현 완료 시 `ApplicationTest`의 모든 테스트가 성공
-- [ ] 프로그래밍 요구 사항에서 달리 명시하지 않는 한 파일, 패키지 이름을 수정하거나 이동 X
+- [x] 프로그래밍 요구 사항에서 달리 명시하지 않는 한 파일, 패키지 이름을 수정하거나 이동 X
 - [ ] indent(인덴트, 들여쓰기) depth를 3이 넘지 않도록 구현(2까지만 허용)
-- [ ] 3항 연산자 사용 X
+- [x] 3항 연산자 사용 X
 - [ ] 함수(또는 메서드)가 한 가지 일만 하도록 최대한 작게 만들기
 - [ ] JUnit 5와 AssertJ를 이용하여 정리한 기능 목록이 정상적으로 작동하는지 테스트 코드로 확인
 - [ ] 함수(또는 메서드)의 길이가 15라인을 넘어가지 않도록 구현
-- [ ] else 예약어 사용 X
-- [ ] Java Enum을 적용하여 프로그램을 구현
+- [x] else 예약어 사용 X
+- [x] Java Enum을 적용하여 프로그램을 구현
 - [ ] 구현한 기능에 대한 단위 테스트를 작성(단, UI(System.out, System.in, Scanner) 로직은 제외)
 
 ### 라이브러리 요구 사항
 
-- [ ] camp.nextstep.edu.missionutils에서 제공하는 Console API를 사용하여 구현
-- [ ] 사용자가 입력하는 값은 camp.nextstep.edu.missionutils.Console의 readLine()을 활용
+- [x] camp.nextstep.edu.missionutils에서 제공하는 Console API를 사용하여 구현
+- [x] 사용자가 입력하는 값은 camp.nextstep.edu.missionutils.Console의 readLine()을 활용
