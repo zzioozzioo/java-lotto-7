@@ -10,7 +10,6 @@ public enum Rank {
 
     private final int score;
     private final long prize;
-
     private final String stringPrize;
 
     Rank(int score, long prize, String stringPrize) {
@@ -24,10 +23,7 @@ public enum Rank {
             return FIRST;
         }
         if (SECOND.getScore() == score) {
-            if (isBonusMatches) {
-                return SECOND;
-            }
-            return THIRD;
+            return secondOrThird(isBonusMatches);
         }
         if (FOURTH.getScore() == score) {
             return FOURTH;
@@ -36,6 +32,13 @@ public enum Rank {
             return FIFTH;
         }
         return NONE;
+    }
+
+    private static Rank secondOrThird(boolean isBonusMatches) {
+        if (isBonusMatches) {
+            return SECOND;
+        }
+        return THIRD;
     }
 
     public int getScore() {
