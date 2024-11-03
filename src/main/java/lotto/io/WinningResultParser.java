@@ -3,6 +3,7 @@ package lotto.io;
 import static lotto.constants.NumberConstants.DIVIDER_REPEAT_COUNT;
 import static lotto.constants.OutputMessages.TOTAL_RATE_OF_RETURN_LABEL;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import lotto.constants.OutputMessages;
 import lotto.constants.StringConstants;
@@ -16,7 +17,9 @@ public class WinningResultParser {
 
         appendWinningStatistics(sb);
         appendResult(sb, winningResult.getResult());
-        appendRateOfReturn(sb, winningResult.getRateOfReturn());
+
+        double rateOfReturn = winningResult.getRateOfReturn();
+        appendRateOfReturn(sb, parseRateOfReturn(rateOfReturn));
 
         return sb.toString();
     }
@@ -59,7 +62,13 @@ public class WinningResultParser {
         return "";
     }
 
-    private void appendRateOfReturn(StringBuilder sb, double rateOfReturn) {
+    private String parseRateOfReturn(double rateOfReturn) {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return df.format(rateOfReturn);
+    }
+
+    private void appendRateOfReturn(StringBuilder sb, String rateOfReturn) {
+
         sb.append(TOTAL_RATE_OF_RETURN_LABEL)
                 .append(rateOfReturn)
                 .append(StringConstants.PERCENT)
