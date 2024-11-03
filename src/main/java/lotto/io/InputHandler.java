@@ -20,7 +20,7 @@ public class InputHandler {
         this.validator = validator;
     }
 
-    public LottoRequest LottoNumberHandle() {
+    public LottoRequest handleWinningNumber() {
         String winningNumbers = readWinningNumbers();
         int bonusNumber = readBonusNumber();
 
