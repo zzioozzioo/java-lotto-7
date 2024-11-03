@@ -14,8 +14,6 @@ public class WinningProcessor {
     private final WinningLotto winningLotto;
     private final int bonusNumber;
 
-    // TODO: WinningFactory, WinningManager 역할 고민해 보기
-
     public WinningProcessor(UserLotto userLotto, WinningLotto winningLotto, int bonusNumber) {
         this.userLotto = userLotto;
         this.winningLotto = winningLotto;
