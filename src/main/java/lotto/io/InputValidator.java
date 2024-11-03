@@ -14,7 +14,7 @@ public class InputValidator {
     }
 
     public void validateWinningNumbers(String winningNumbers) {
-        if (winningNumbers.isEmpty()) {
+        if (winningNumbers == null || winningNumbers.trim().isEmpty()) {
             throw new EmptyWinningNumberInputException();
         }
     }
