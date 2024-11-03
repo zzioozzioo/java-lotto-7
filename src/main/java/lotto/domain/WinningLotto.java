@@ -1,5 +1,7 @@
 package lotto.domain;
 
+import static lotto.constants.ExceptionMessages.BONUS_NUMBER_DUPLICATED_LOTTO_NUMBER;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ public class WinningLotto {
         this.winningLottoNumbers = winningLottoNumbers;
     }
 
-    public int countMatchingNumbers(Lotto userLotto) {
-        List<Integer> userLottoList = userLotto.getNumbers();
+    public int countMatchingNumbers(Lotto lotto) {
+        List<Integer> userLottoList = lotto.getNumbers();
         List<Integer> winningLottoNumbersList = winningLottoNumbers.getNumbers();
 
         List<Integer> matchNumbersList = new ArrayList<>(userLottoList);
@@ -25,7 +27,7 @@ public class WinningLotto {
 
     public void checkDuplicateBonusNumber(int bonusNumber) {
         if (winningLottoNumbers.getNumbers().contains(bonusNumber)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+            throw new IllegalArgumentException(BONUS_NUMBER_DUPLICATED_LOTTO_NUMBER);
         }
     }
 }

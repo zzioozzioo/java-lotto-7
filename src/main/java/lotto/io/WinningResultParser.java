@@ -22,22 +22,41 @@ public class WinningResultParser {
     }
 
     private void appendWinningStatistics(StringBuilder sb) {
-        sb.append(OutputMessages.WINNING_STATISTICS_LABEL)
-                .append(StringConstants.DASH.repeat(DIVIDER_REPEAT_COUNT));
+        sb.append(StringConstants.NEW_LINE)
+                .append(OutputMessages.WINNING_STATISTICS_LABEL)
+                .append(StringConstants.NEW_LINE)
+                .append(StringConstants.DASH.repeat(DIVIDER_REPEAT_COUNT))
+                .append(StringConstants.NEW_LINE);
     }
 
     private void appendResult(StringBuilder sb, Map<Rank, Integer> result) {
+
         for (Rank rank : result.keySet()) {
-            sb.append(rank).append(OutputMessages.COUNT_UNIT)
-                    .append(OutputMessages.MATCH_LABEL)
-                    .append(StringConstants.OPEN_PARENTHESIS)
-                    .append(rank.getStringPrize())
-                    .append(OutputMessages.WON)
-                    .append(StringConstants.CLOSE_PARENTHESIS)
-                    .append(result.get(rank))
-                    .append(OutputMessages.COUNT_UNIT)
-                    .append(StringConstants.NEW_LINE);
+            if (rank != Rank.NONE) {
+                append(sb, result, rank);
+            }
         }
+    }
+
+    private void append(StringBuilder sb, Map<Rank, Integer> result, Rank rank) {
+        sb.append(rank.getScore()).append(OutputMessages.COUNT_UNIT)
+                .append(" " + OutputMessages.MATCH_LABEL)
+                .append(getBonusBallTextIfSecondRank(rank))
+                .append(" " + StringConstants.OPEN_PARENTHESIS)
+                .append(rank.getStringPrize())
+                .append(OutputMessages.WON)
+                .append(StringConstants.CLOSE_PARENTHESIS)
+                .append(" " + StringConstants.DASH + " ")
+                .append(result.get(rank))
+                .append(OutputMessages.COUNT_UNIT)
+                .append(StringConstants.NEW_LINE);
+    }
+
+    private String getBonusBallTextIfSecondRank(Rank rank) {
+        if (rank == Rank.SECOND) {
+            return StringConstants.COMMA + " " + OutputMessages.BONUS_BALL + " " + OutputMessages.MATCH_LABEL;
+        }
+        return "";
     }
 
     private void appendRateOfReturn(StringBuilder sb, double rateOfReturn) {
@@ -47,5 +66,4 @@ public class WinningResultParser {
                 .append(OutputMessages.IS_SUFFIX)
                 .append(StringConstants.ENDING_DOT);
     }
-
 }

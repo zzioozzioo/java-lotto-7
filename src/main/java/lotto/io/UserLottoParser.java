@@ -18,15 +18,18 @@ public class UserLottoParser {
     }
 
     private void appendLottoCount(StringBuilder sb, int lottoCount) {
-        sb.append(lottoCount)
+        sb.append(StringConstants.NEW_LINE)
+                .append(lottoCount)
                 .append(OutputMessages.COUNT_UNIT)
                 .append(OutputMessages.PURCHASED_MESSAGE)
-                .append(StringConstants.ENDING_DOT);
+                .append(StringConstants.ENDING_DOT)
+                .append(StringConstants.NEW_LINE);
     }
 
     private void appendLottoNumbers(StringBuilder sb, List<Lotto> lottos) {
         for (Lotto lotto : lottos) {
             sb.append(lotto.getNumbers()).append(StringConstants.NEW_LINE);
         }
+        sb.append(StringConstants.NEW_LINE);
     }
 }
