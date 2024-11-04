@@ -91,10 +91,9 @@ src/
 │           ├── domain
 │           │   ├── Lotto.java                    // 로또 객체
 │           │   ├── Rank.java                     // 일치 개수별 등수를 관리
-│           │   ├── WinningLotto.java             // 당첨 로또(당첨 번호와 보너스 번호)를 관리
+│           │   ├── WinningLotto.java             // 당첨 로또를 관리
 │           │   └── WinningProcessor.java         // 당첨 결과(통계, 당첨금, 수익률)를 관리
 │           ├── dto
-│           │   ├── LottoRequest.java             // 당첨 번호와 보너스 번호를 저장
 │           │   ├── UserLotto.java                // 사용자가 구매한 로또를 저장
 │           │   └── WinningResult.java            // 당첨 결과를 저장
 │           │
@@ -146,18 +145,18 @@ src/
 - [x] JDK-21 사용
 - [x] 프로그램 실행의 시작점은 `Application`의 `main()`
 - [x] `build.gradle` 변경 불가, 제공된 라이브러리만 사용
-- [ ] [Java Style Guide](https://github.com/woowacourse/woowacourse-docs/tree/main/styleguide/java)를 준수하며 프로그래밍
+- [x] [Java Style Guide](https://github.com/woowacourse/woowacourse-docs/tree/main/styleguide/java)를 준수하며 프로그래밍
 - [x] 프로그램 종료 시`System.exit()`를 호출 X
-- [ ] 프로그램 구현 완료 시 `ApplicationTest`의 모든 테스트가 성공
+- [x] 프로그램 구현 완료 시 `ApplicationTest`의 모든 테스트가 성공
 - [x] 프로그래밍 요구 사항에서 달리 명시하지 않는 한 파일, 패키지 이름을 수정하거나 이동 X
-- [ ] indent(인덴트, 들여쓰기) depth를 3이 넘지 않도록 구현(2까지만 허용)
+- [x] indent(인덴트, 들여쓰기) depth를 3이 넘지 않도록 구현(2까지만 허용)
 - [x] 3항 연산자 사용 X
-- [ ] 함수(또는 메서드)가 한 가지 일만 하도록 최대한 작게 만들기
-- [ ] JUnit 5와 AssertJ를 이용하여 정리한 기능 목록이 정상적으로 작동하는지 테스트 코드로 확인
-- [ ] 함수(또는 메서드)의 길이가 15라인을 넘어가지 않도록 구현
+- [x] 함수(또는 메서드)가 한 가지 일만 하도록 최대한 작게 만들기
+- [x] JUnit 5와 AssertJ를 이용하여 정리한 기능 목록이 정상적으로 작동하는지 테스트 코드로 확인
+- [x] 함수(또는 메서드)의 길이가 15라인을 넘어가지 않도록 구현
 - [x] else 예약어 사용 X
 - [x] Java Enum을 적용하여 프로그램을 구현
-- [ ] 구현한 기능에 대한 단위 테스트를 작성(단, UI(System.out, System.in, Scanner) 로직은 제외)
+- [x] 구현한 기능에 대한 단위 테스트를 작성(단, UI(System.out, System.in, Scanner) 로직은 제외)
 
 ### 라이브러리 요구 사항
 

@@ -21,7 +21,7 @@ import lotto.exception.IllegalNumberFormatException;
 
 public class LottoService {
 
-    public UserLotto getUserLotto(long buyAmount) {
+    public UserLotto getValidUserLotto(long buyAmount) {
         int lottoCount = getLottoCount(buyAmount);
         List<Lotto> lottos = generateLotto(lottoCount);
 
@@ -47,23 +47,23 @@ public class LottoService {
     }
 
     public WinningLotto convertWinningNumbers(String inputWinningNumbers) {
-        List<Integer> winningNumbers;
-
         try {
-            winningNumbers = Arrays.stream(inputWinningNumbers.split(COMMA))
+            List<Integer> winningNumbers = Arrays.stream(inputWinningNumbers.split(COMMA))
                     .map(number -> Integer.parseInt(number.trim()))
                     .toList();
+
+            return new WinningLotto(new Lotto(winningNumbers));
         } catch (NumberFormatException e) {
             throw new IllegalNumberFormatException();
         }
-
-        return new WinningLotto(new Lotto(winningNumbers));
     }
 
+    // TODO: 메서드명 수정하기
     public WinningResult calculateWinningResult(UserLotto userLotto,
                                                 long buyAmount,
                                                 WinningLotto winningLotto,
                                                 int bonusNumber) {
+
         return new WinningProcessor(userLotto, winningLotto, bonusNumber).calculate(buyAmount);
     }
 

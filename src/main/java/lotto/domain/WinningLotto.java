@@ -7,6 +7,7 @@ import lotto.exception.BonusNumberDuplicatedLottoNumberException;
 public class WinningLotto {
 
     private final Lotto winningLottoNumbers;
+    // TODO: 필드에 bonusNumber 추가하는 거 고민해 보기
 
     public WinningLotto(Lotto winningLottoNumbers) {
         this.winningLottoNumbers = winningLottoNumbers;
@@ -22,7 +23,7 @@ public class WinningLotto {
         return matchNumbersList.size();
     }
 
-    public void checkDuplicateBonusNumber(int bonusNumber) {
+    public void validateDuplicateBonusNumber(int bonusNumber) {
         if (winningLottoNumbers.getNumbers().contains(bonusNumber)) {
             throw new BonusNumberDuplicatedLottoNumberException();
         }

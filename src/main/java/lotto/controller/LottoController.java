@@ -8,9 +8,17 @@ import java.util.Map;
 import lotto.config.LottoConfig;
 import lotto.domain.Rank;
 import lotto.domain.WinningLotto;
-import lotto.dto.LottoRequest;
 import lotto.dto.UserLotto;
 import lotto.dto.WinningResult;
+import lotto.exception.BonusNumberDuplicatedLottoNumberException;
+import lotto.exception.BonusNumberOutOfRangeException;
+import lotto.exception.BuyAmountHasChangeException;
+import lotto.exception.DuplicatedLottoNumberException;
+import lotto.exception.EmptyWinningNumberInputException;
+import lotto.exception.IllegalNumberFormatException;
+import lotto.exception.LottoCountOutOfRangeException;
+import lotto.exception.LottoNumberCountOutOfRangeException;
+import lotto.exception.LottoNumberOutOfRangeException;
 import lotto.io.InputHandler;
 import lotto.io.OutputHandler;
 import lotto.service.LottoService;
@@ -33,32 +41,73 @@ public class LottoController {
     }
 
     public void run() {
+        try {
+            playLottoGame();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void playLottoGame() {
 
         long buyAmount = getValidBuyAmount();
 
-        UserLotto userLotto = lottoService.getUserLotto(buyAmount);
+        UserLotto userLotto = lottoService.getValidUserLotto(buyAmount);
         outputHandler.userLottoHandle(userLotto);
 
-        LottoRequest lottoRequest = inputHandler.handleWinningNumber();
-        WinningLotto winningLotto = lottoService.convertWinningNumbers(lottoRequest.getWinningNumbers());
+        WinningLotto winningLotto = getValidWinningLotto();
 
-        int bonusNumber = getValidBonusNumber(lottoRequest, winningLotto);
+        int bonusNumber = getValidBonusNumber(winningLotto);
 
         WinningResult result = lottoService.calculateWinningResult(userLotto, buyAmount, winningLotto, bonusNumber);
         outputHandler.winningResultHandle(result);
     }
 
-
     private long getValidBuyAmount() {
-        long buyAmount = inputHandler.readBuyAmount();
-        validateBuyAmount(buyAmount);
-        return buyAmount;
+        while (true) {
+            try {
+                long buyAmount = inputHandler.readBuyAmount();
+                validateBuyAmount(buyAmount);
+                return buyAmount;
+            } catch (IllegalNumberFormatException | LottoCountOutOfRangeException |
+                     BuyAmountHasChangeException exception) {
+                System.out.println(exception.getMessage());
+            }
+        }
+
     }
 
-    private int getValidBonusNumber(LottoRequest lottoRequest, WinningLotto winningLotto) {
-        int bonusNumber = lottoRequest.getBonusNumber();
+    private WinningLotto getValidWinningLotto() {
+        while (true) {
+            try {
+                String winningNumbers = inputHandler.readWinningNumbers();
+                return lottoService.convertWinningNumbers(winningNumbers);
+            } catch (EmptyWinningNumberInputException | IllegalNumberFormatException |
+                     LottoNumberCountOutOfRangeException | LottoNumberOutOfRangeException |
+                     DuplicatedLottoNumberException exception
+            ) {
+                System.out.println(exception.getMessage());
+            }
+        }
+    }
+
+    private int getValidBonusNumber(WinningLotto winningLotto) {
+        while (true) {
+            try {
+                int inputBonusNumber = inputHandler.readBonusNumber();
+                return checkBonusNumber(inputBonusNumber, winningLotto);
+            } catch (IllegalNumberFormatException | BonusNumberOutOfRangeException |
+                     BonusNumberDuplicatedLottoNumberException exception) {
+                System.out.println(exception.getMessage());
+            }
+        }
+    }
+
+
+    // TODO: 서비스로 보낼까? 메서드명도 다시 고민해 보기
+    private int checkBonusNumber(int bonusNumber, WinningLotto winningLotto) {
         validateBonusNumberRange(bonusNumber);
-        winningLotto.checkDuplicateBonusNumber(bonusNumber);
+        winningLotto.validateDuplicateBonusNumber(bonusNumber);
         return bonusNumber;
     }
 
@@ -69,6 +118,4 @@ public class LottoController {
         }
         return initialMap;
     }
-
-
 }

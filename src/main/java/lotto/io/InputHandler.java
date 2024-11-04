@@ -4,7 +4,6 @@ import static lotto.constants.InputMessages.READ_BONUS_NUMBER;
 import static lotto.constants.InputMessages.READ_BUY_AMOUNT;
 import static lotto.constants.InputMessages.READ_WINNING_NUMBER;
 
-import lotto.dto.LottoRequest;
 import lotto.io.reader.Reader;
 import lotto.io.writer.Writer;
 
@@ -20,27 +19,20 @@ public class InputHandler {
         this.validator = validator;
     }
 
-    public LottoRequest handleWinningNumber() {
-        String winningNumbers = readWinningNumbers();
-        int bonusNumber = readBonusNumber();
-
-        return LottoRequest.of(winningNumbers, bonusNumber);
-    }
-
     public long readBuyAmount() {
         writer.write(READ_BUY_AMOUNT);
         String buyAmount = reader.readLine();
         return validator.validateBuyAmount(buyAmount);
     }
 
-    private String readWinningNumbers() {
+    public String readWinningNumbers() {
         writer.write(READ_WINNING_NUMBER);
         String winningNumbers = reader.readLine();
         validator.validateWinningNumbers(winningNumbers);
         return winningNumbers;
     }
 
-    private int readBonusNumber() {
+    public int readBonusNumber() {
         writer.write(READ_BONUS_NUMBER);
         String bonusNumber = reader.readLine();
         return validator.validateBonusNumber(bonusNumber);
