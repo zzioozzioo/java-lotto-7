@@ -118,8 +118,8 @@ src/
     └── java
         └── lotto
             ├── ApplicationTest.java
+            ├── LottoTest.java
             ├── domain
-            │   ├── LottoTest.java
             │   ├── RankTest.java
             │   ├── WinningLottoTest.java
             │   └── WinningProcessorTest.java
