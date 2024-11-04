@@ -63,7 +63,7 @@ public class WinningResultParser {
     }
 
     private String parseRateOfReturn(double rateOfReturn) {
-        DecimalFormat df = new DecimalFormat("#,##0.00");
+        DecimalFormat df = new DecimalFormat("#,##0.0");
         return df.format(rateOfReturn);
     }
 
