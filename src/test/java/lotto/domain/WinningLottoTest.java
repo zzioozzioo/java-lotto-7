@@ -33,7 +33,7 @@ class WinningLottoTest {
         int bonusNumber = 7;
 
         //when & then
-        assertThatThrownBy(() -> winningLotto.checkDuplicateBonusNumber(bonusNumber))
+        assertThatThrownBy(() -> winningLotto.validateDuplicateBonusNumber(bonusNumber))
                 .isInstanceOf(IllegalArgumentException.class);
 
     }

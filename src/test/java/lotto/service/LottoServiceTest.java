@@ -20,7 +20,7 @@ class LottoServiceTest {
         LottoService service = new LottoService();
 
         //when
-        UserLotto userLotto = service.getUserLotto(buyAmount);
+        UserLotto userLotto = service.getValidUserLotto(buyAmount);
 
         //then
         Assertions.assertThat(userLotto.getLottos().size()).isEqualTo(lottoCount);

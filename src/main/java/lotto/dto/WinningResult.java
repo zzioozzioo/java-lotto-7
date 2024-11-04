@@ -23,11 +23,11 @@ public class WinningResult {
         return result;
     }
 
-    public double getRateOfReturn() {
-        return rateOfReturn;
-    }
-
     public long getPrize() {
         return prize;
+    }
+
+    public double getRateOfReturn() {
+        return rateOfReturn;
     }
 }
