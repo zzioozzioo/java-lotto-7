@@ -1,6 +1,5 @@
 package lotto.controller;
 
-import static lotto.validator.Validator.validateBonusNumberRange;
 import static lotto.validator.Validator.validateBuyAmount;
 
 import java.util.EnumMap;
@@ -95,20 +94,12 @@ public class LottoController {
         while (true) {
             try {
                 int inputBonusNumber = inputHandler.readBonusNumber();
-                return checkBonusNumber(inputBonusNumber, winningLotto);
+                return lottoService.validateBonusNumber(inputBonusNumber, winningLotto);
             } catch (IllegalNumberFormatException | BonusNumberOutOfRangeException |
                      BonusNumberDuplicatedLottoNumberException exception) {
                 System.out.println(exception.getMessage());
             }
         }
-    }
-
-
-    // TODO: 서비스로 보낼까? 메서드명도 다시 고민해 보기
-    private int checkBonusNumber(int bonusNumber, WinningLotto winningLotto) {
-        validateBonusNumberRange(bonusNumber);
-        winningLotto.validateDuplicateBonusNumber(bonusNumber);
-        return bonusNumber;
     }
 
     public static Map<Rank, Integer> initializeResultMap() {

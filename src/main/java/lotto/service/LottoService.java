@@ -7,6 +7,7 @@ import static lotto.constants.NumberConstants.LOTTO_PRICE;
 import static lotto.constants.NumberConstants.LOTTO_START_NUM;
 import static lotto.constants.NumberConstants.ZERO;
 import static lotto.constants.StringConstants.COMMA;
+import static lotto.validator.Validator.validateBonusNumberRange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +59,12 @@ public class LottoService {
         }
     }
 
-    // TODO: 메서드명 수정하기
+    public int validateBonusNumber(int bonusNumber, WinningLotto winningLotto) {
+        validateBonusNumberRange(bonusNumber);
+        winningLotto.validateDuplicateBonusNumber(bonusNumber);
+        return bonusNumber;
+    }
+
     public WinningResult calculateWinningResult(UserLotto userLotto,
                                                 long buyAmount,
                                                 WinningLotto winningLotto,
