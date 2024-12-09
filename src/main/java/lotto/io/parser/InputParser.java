@@ -5,15 +5,17 @@ import static lotto.constants.ErrorMessages.BUY_AMOUNT_OUT_OF_RANGE_ERROR;
 import static lotto.constants.ErrorMessages.NUMBER_OUT_OF_RANGE_ERROR;
 import static lotto.constants.NumberConstants.LOTTO_TICKET_PRICE;
 import static lotto.constants.NumberConstants.MAXIMUM_BUY_AMOUNT;
-import static lotto.constants.NumberConstants.MAXIMUM_WINNING_NUMBER;
+import static lotto.constants.NumberConstants.MAXIMUM_LOTTO_NUMBER;
 import static lotto.constants.NumberConstants.MINIMUM_BUY_AMOUNT;
-import static lotto.constants.NumberConstants.MINIMUM_WINNING_NUMBER;
+import static lotto.constants.NumberConstants.MINIMUM_LOTTO_NUMBER;
+import static lotto.constants.StringConstants.NEW_LINE;
 import static lotto.util.Utils.parseStringToInt;
 import static lotto.util.Utils.splitInputWithComma;
 import static lotto.util.Utils.validateEmptyInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import lotto.domain.Lotto;
 
 public class InputParser {
 
@@ -58,7 +60,7 @@ public class InputParser {
     }
 
     private void validateWinningNumber(int parsedNumber) {
-        if (parsedNumber < MINIMUM_WINNING_NUMBER || parsedNumber > MAXIMUM_WINNING_NUMBER) {
+        if (parsedNumber < MINIMUM_LOTTO_NUMBER || parsedNumber > MAXIMUM_LOTTO_NUMBER) {
             throw new IllegalArgumentException(NUMBER_OUT_OF_RANGE_ERROR);
         }
     }
@@ -71,8 +73,16 @@ public class InputParser {
     }
 
     private void validateBonusNumber(int parsedBonusNumber) {
-        if (parsedBonusNumber < MINIMUM_WINNING_NUMBER || parsedBonusNumber > MAXIMUM_WINNING_NUMBER) {
+        if (parsedBonusNumber < MINIMUM_LOTTO_NUMBER || parsedBonusNumber > MAXIMUM_LOTTO_NUMBER) {
             throw new IllegalArgumentException(NUMBER_OUT_OF_RANGE_ERROR);
         }
+    }
+
+    public String parsePurchasedLotto(List<Lotto> purchasedLotto) {
+        StringBuilder sb = new StringBuilder();
+        for (Lotto lotto : purchasedLotto) {
+            sb.append(lotto).append(NEW_LINE);
+        }
+        return sb.toString();
     }
 }
