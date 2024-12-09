@@ -2,7 +2,7 @@ package lotto.io.parser;
 
 import static lotto.constants.ErrorMessages.BUY_AMOUNT_HAS_CHANGE_ERROR;
 import static lotto.constants.ErrorMessages.BUY_AMOUNT_OUT_OF_RANGE_ERROR;
-import static lotto.constants.ErrorMessages.WINNING_NUMBER_OUT_OF_RANGE_ERROR;
+import static lotto.constants.ErrorMessages.NUMBER_OUT_OF_RANGE_ERROR;
 import static lotto.constants.NumberConstants.LOTTO_TICKET_PRICE;
 import static lotto.constants.NumberConstants.MAXIMUM_BUY_AMOUNT;
 import static lotto.constants.NumberConstants.MAXIMUM_WINNING_NUMBER;
@@ -59,7 +59,20 @@ public class InputParser {
 
     private void validateWinningNumber(int parsedNumber) {
         if (parsedNumber < MINIMUM_WINNING_NUMBER || parsedNumber > MAXIMUM_WINNING_NUMBER) {
-            throw new IllegalArgumentException(WINNING_NUMBER_OUT_OF_RANGE_ERROR);
+            throw new IllegalArgumentException(NUMBER_OUT_OF_RANGE_ERROR);
+        }
+    }
+
+    public int parseBonusNumber(String input) {
+        validateEmptyInput(input);
+        int parsedBonusNumber = parseStringToInt(input);
+        validateBonusNumber(parsedBonusNumber);
+        return parsedBonusNumber;
+    }
+
+    private void validateBonusNumber(int parsedBonusNumber) {
+        if (parsedBonusNumber < MINIMUM_WINNING_NUMBER || parsedBonusNumber > MAXIMUM_WINNING_NUMBER) {
+            throw new IllegalArgumentException(NUMBER_OUT_OF_RANGE_ERROR);
         }
     }
 }
