@@ -1,11 +1,11 @@
 package lotto.util;
 
-import lotto.exception.InvalidInputException;
+import static lotto.constants.StringConstants.COMMA;
 
 public class Utils {
     public static void validateEmptyInput(String input) {
         if (input == null || input.trim().isEmpty()) {
-            throw new InvalidInputException();
+            throw new IllegalArgumentException();
         }
     }
 
@@ -13,7 +13,11 @@ public class Utils {
         try {
             return Integer.parseInt(num);
         } catch (NumberFormatException e) {
-            throw new InvalidInputException();
+            throw new IllegalArgumentException();
         }
+    }
+
+    public static String[] splitInputWithComma(String input) {
+        return input.split(COMMA, -1);
     }
 }
