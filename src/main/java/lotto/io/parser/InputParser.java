@@ -31,15 +31,15 @@ public class InputParser {
         validateBuyAmountRange(buyAmount);
     }
 
-    private void validateBuyAmountRange(Long buyAmount) {
-        if (buyAmount < MINIMUM_BUY_AMOUNT || buyAmount > MAXIMUM_BUY_AMOUNT) {
-            throw new IllegalArgumentException(BUY_AMOUNT_OUT_OF_RANGE_ERROR);
-        }
-    }
-
     private void validateHasChange(Long buyAmount) {
         if (buyAmount % LOTTO_TICKET_PRICE != 0) {
             throw new IllegalArgumentException(BUY_AMOUNT_HAS_CHANGE_ERROR);
+        }
+    }
+
+    private void validateBuyAmountRange(Long buyAmount) {
+        if (buyAmount < MINIMUM_BUY_AMOUNT || buyAmount > MAXIMUM_BUY_AMOUNT) {
+            throw new IllegalArgumentException(BUY_AMOUNT_OUT_OF_RANGE_ERROR);
         }
     }
 
@@ -80,6 +80,7 @@ public class InputParser {
 
     public String parsePurchasedLotto(List<Lotto> purchasedLotto) {
         StringBuilder sb = new StringBuilder();
+        sb.append(purchasedLotto.size()).append("개를 구매했습니다.").append(NEW_LINE);
         for (Lotto lotto : purchasedLotto) {
             sb.append(lotto).append(NEW_LINE);
         }
