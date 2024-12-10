@@ -40,4 +40,13 @@ public class LottoService {
     public Map<Rank, Integer> checkWinning(List<Lotto> purchasedLotto, Winning winning) {
         return winning.checkWinning(purchasedLotto);
     }
+
+    // 수익률 계산 기능
+    public double calculateRateOfReturn(Map<Rank, Integer> winningResult, Long buyAmount) {
+        double totalProfit = 0;
+        for (Rank rank : winningResult.keySet()) {
+            totalProfit += rank.getPrize() * winningResult.get(rank);
+        }
+        return totalProfit / buyAmount * 100.0;
+    }
 }
