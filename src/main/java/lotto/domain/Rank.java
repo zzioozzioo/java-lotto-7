@@ -43,4 +43,12 @@ public enum Rank {
     public int getMatchCount() {
         return matchCount;
     }
+
+    public Long getPrize() {
+        return prize;
+    }
+
+    public String getStringPrize() {
+        return stringPrize;
+    }
 }
