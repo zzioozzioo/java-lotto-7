@@ -1,5 +1,6 @@
 package lotto.util;
 
+import static lotto.constants.ErrorMessages.BUY_AMOUNT_NOT_NUMERIC_ERROR;
 import static lotto.constants.StringConstants.COMMA;
 
 public class Utils {
@@ -13,7 +14,7 @@ public class Utils {
         try {
             return Integer.parseInt(num);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(BUY_AMOUNT_NOT_NUMERIC_ERROR);
         }
     }
 
