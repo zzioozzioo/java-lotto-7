@@ -55,20 +55,13 @@ public class Controller {
         // 당첨 번호 + 보너스 번호 입력 및 처리
         // TODO: 당첨 번호 입력 후 모든 유효성 검사 마친 뒤에 보너스 번호 입력받도록 수정
         Winning winning = getWinning();
+        int bonusNumber = getValidBonusNumber(winning); // 이 bonusNumber를 어디에 써..?
 
         // 당첨 확인
         Map<Rank, Integer> winningResult = lottoService.checkWinning(purchasedLotto, winning);
         double rateOfReturn = lottoService.calculateRateOfReturn(winningResult, buyAmount);
         String result = resultParser.parseWinningResult(winningResult, rateOfReturn);
         outputView.printWinningResult(result);
-    }
-
-    private Winning getWinning() {
-        return inputHandler.handleInputWithRetry(() -> {
-            List<Integer> winningNumber = getValidWinningNumber();
-            int bonusNumber = getValidBonusNumber();
-            return lottoService.getValidWinningNumbers(winningNumber, bonusNumber);
-        });
     }
 
     private Long getValidBuyAmount() {
@@ -78,13 +71,24 @@ public class Controller {
         });
     }
 
+    private Winning getWinning() {
+        return inputHandler.handleInputWithRetry(() -> {
+            List<Integer> winningNumber = getValidWinningNumber();
+            return lottoService.getWinning(winningNumber);
+        });
+    }
+
     private List<Integer> getValidWinningNumber() {
         String input = inputView.readWinningNumber();
         return inputParser.parseWinningNumber(input);
     }
 
-    private int getValidBonusNumber() {
-        String input = inputView.readBonusNumber();
-        return inputParser.parseBonusNumber(input);
+    private int getValidBonusNumber(Winning winning) {
+        return inputHandler.handleInputWithRetry(() -> {
+            String input = inputView.readBonusNumber();
+            int bonusNumber = inputParser.parseBonusNumber(input);
+            lottoService.getValidWinningNumbers(winning, bonusNumber);
+            return bonusNumber;
+        });
     }
 }

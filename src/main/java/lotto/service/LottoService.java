@@ -28,12 +28,15 @@ public class LottoService {
         return lottoList;
     }
 
+    public Winning getWinning(List<Integer> winningNumber) {
+        return new Winning(new Lotto(winningNumber));
+    }
+
     // 당첨 번호(+보너스 번호) 확인
-    public Winning getValidWinningNumbers(List<Integer> winningNumber, int bonusNumber) {
-        if (winningNumber.contains(bonusNumber)) {
+    public void getValidWinningNumbers(Winning winning, int bonusNumber) {
+        if (winning.isDuplicatedNumber(bonusNumber)) {
             throw new IllegalArgumentException(DUPLICATED_LOTTO_NUMBER_ERROR);
         }
-        return new Winning(new Lotto(winningNumber), bonusNumber);
     }
 
     // 당첨 확인 기능
