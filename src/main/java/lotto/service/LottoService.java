@@ -10,6 +10,7 @@ import static lotto.constants.NumberConstants.NUMBER_OF_LOTTO_NUMBERS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lotto.domain.Lotto;
 import lotto.domain.Rank;
 import lotto.domain.Winning;
@@ -23,9 +24,14 @@ public class LottoService {
         for (int i = 0; i < numberOfLottoTickets; i++) {
             List<Integer> numbers = pickUniqueNumbersInRange(
                     MINIMUM_LOTTO_NUMBER, MAXIMUM_LOTTO_NUMBER, NUMBER_OF_LOTTO_NUMBERS);
-            lottoList.add(new Lotto(numbers));
+            Lotto lotto = new Lotto(numbers);
+            lottoList.add(sortLotto(lotto));
         }
         return lottoList;
+    }
+
+    private Lotto sortLotto(Lotto lotto) {
+        return new Lotto(lotto.getNumbers().stream().sorted().collect(Collectors.toList()));
     }
 
     public Winning getWinning(List<Integer> winningNumber) {
